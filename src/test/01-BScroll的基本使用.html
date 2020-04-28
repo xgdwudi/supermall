@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    .wrapper{
+      height: 200px;
+      background: #00FF00;
+      overflow: hidden;
+      /*overflow-y: scroll;*/
+    }
+  </style>
+</head>
+<body>
+<div>
+  <div class="wrapper">
+    <ul>
+      <li>滚动内容1</li>
+      <li>滚动内容2</li>
+      <li>滚动内容3</li>
+      <li>滚动内容4</li>
+      <li>滚动内容5</li>
+      <li>滚动内容6</li>
+      <li>滚动内容7</li>
+      <li>滚动内容8</li>
+      <li>滚动内容9</li>
+      <li>滚动内容10</li>
+      <li>滚动内容11</li>
+      <li>滚动内容12</li>
+      <li>滚动内容13</li>
+      <li>滚动内容14</li>
+      <li>滚动内容15</li>
+      <li>滚动内容16</li>
+      <li>滚动内容17</li>
+      <li>滚动内容18</li>
+      <li>滚动内容19</li>
+      <li>滚动内容20</li>
+      <li>滚动内容21</li>
+      <li>滚动内容22</li>
+      <li>滚动内容23</li>
+      <li>滚动内容24</li>
+      <li>滚动内容25</li>
+      <li>滚动内容26</li>
+      <li>滚动内容27</li>
+      <li>滚动内容28</li>
+      <li>滚动内容29</li>
+      <li>滚动内容30</li>
+      <li>滚动内容31</li>
+      <li>滚动内容32</li>
+      <li>滚动内容33</li>
+      <li>滚动内容34</li>
+      <li>滚动内容35</li>
+      <li>滚动内容36</li>
+      <li>滚动内容37</li>
+      <li>滚动内容38</li>
+      <li>滚动内容39</li>
+      <li>滚动内容40</li>
+      <li>滚动内容41</li>
+      <li>滚动内容42</li>
+      <li>滚动内容43</li>
+      <li>滚动内容44</li>
+      <li>滚动内容45</li>
+      <li>滚动内容46</li>
+      <li>滚动内容47</li>
+      <li>滚动内容48</li>
+      <li>滚动内容49</li>
+      <li>滚动内容50</li>
+      <li>滚动内容51</li>
+      <li>滚动内容52</li>
+      <li>滚动内容53</li>
+      <li>滚动内容54</li>
+      <li>滚动内容55</li>
+      <li>滚动内容56</li>
+      <li>滚动内容57</li>
+      <li>滚动内容58</li>
+      <li>滚动内容59</li>
+      <li>滚动内容60</li>
+      <li>滚动内容61</li>
+      <li>滚动内容62</li>
+      <li>滚动内容63</li>
+      <li>滚动内容64</li>
+      <li>滚动内容65</li>
+      <li>滚动内容66</li>
+      <li>滚动内容67</li>
+      <li>滚动内容68</li>
+      <li>滚动内容69</li>
+      <li>滚动内容70</li>
+      <li>滚动内容71</li>
+      <li>滚动内容72</li>
+      <li>滚动内容73</li>
+      <li>滚动内容74</li>
+      <li>滚动内容75</li>
+      <li>滚动内容76</li>
+      <li>滚动内容77</li>
+      <li>滚动内容78</li>
+      <li>滚动内容79</li>
+      <li>滚动内容80</li>
+      <li>滚动内容81</li>
+      <li>滚动内容82</li>
+      <li>滚动内容83</li>
+      <li>滚动内容84</li>
+      <li>滚动内容85</li>
+      <li>滚动内容86</li>
+      <li>滚动内容87</li>
+      <li>滚动内容88</li>
+      <li>滚动内容89</li>
+      <li>滚动内容90</li>
+      <li>滚动内容91</li>
+      <li>滚动内容92</li>
+      <li>滚动内容93</li>
+      <li>滚动内容94</li>
+      <li>滚动内容95</li>
+      <li>滚动内容96</li>
+      <li>滚动内容97</li>
+      <li>滚动内容98</li>
+      <li>滚动内容99</li>
+      <li>滚动内容100</li>
+    </ul>
+  </div>
+</div>
+
+<script src="../../node_modules/better-scroll/dist/bscroll.js"></script>
+<script>
+  // 默认情况下bscroll 是不可以实时的监听滚动位置
+  //probeType 侦测
+  // 0、1都是不振测试时的位置
+  //2 手指滚动的过程中侦测，手指离开后不侦测
+  //3 都侦测
+  const bscroll=new BScroll('.wrapper',
+    {
+      probeType:3,
+      //设置为true 不然监听不到滑点击事件
+      click:true,
+      pullUpLoad:true
+    })
+  bscroll.on('scroll',position=>{
+    // console.log(position);
+  })
+  bscroll.on('pullingUp',()=>{
+    console.log('上拉加载更多');
+  //  发送网络请求
+
+  //  等数据请求完成，，，并且将新的数据展示出来后
+  // 下一次的数显
+    setTimeout(()=>{
+      bscroll.finishPullUp()
+    },1000)
+  })
+</script>
+</body>
+</html>
