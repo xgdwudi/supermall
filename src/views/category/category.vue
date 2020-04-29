@@ -116,7 +116,10 @@
       },
      mounted() {
        // this.bscroll=new BScroll('.ull',{})
-       this.bscroll=new BScroll(this.$refs.aaa,{})
+       this.bscroll=new BScroll(this.$refs.aaa,{
+
+       })
+
      }
     }
 </script>

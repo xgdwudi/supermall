@@ -3,13 +3,22 @@
     <NavBar class="home-nav">
       <div slot="center">购物车</div>
     </NavBar>
-    <div class="right">
-      <home-swiper :banner="banner"></home-swiper>
-    </div>
-    <home-recommend-view :recommend="recommend"></home-recommend-view>
-    <feature></feature>
-    <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" class="tab-control"></tab-control>
-    <goods-list :goods="showgoods"></goods-list>
+    <tab-control :titles="['流行','新款','精选']"
+                 @tabClick="tabClick"
+                 ref="tabcontroll1"
+                 class="isFixd"
+    v-show="isTabFixed"/>
+
+    <scroll class="content1" ref="scroll" :probe-type="3" @scroll="scroll" :pull-up-load="true" @pullingUp="loadmore">
+      <home-swiper :banner="banner" @swiperImgload="swiperImg"></home-swiper>
+      <home-recommend-view :recommend="recommend"/>
+      <feature/>
+      <tab-control :titles="['流行','新款','精选']"
+                   @tabClick="tabClick"
+                   ref="tabcontroll2"/>
+      <goods-list :goods="showgoods"></goods-list>
+    </scroll>
+    <back-top @click.native="BackClick" v-show="isShow"/>
   </div>
 </template>
 
@@ -19,6 +28,7 @@
     getHomeData
 
   } from "../../network/home";
+  import {debounce} from '@/components/common/utils'
 
   import HomeSwiper from "./childComps/HomeSwiper";
   import HomeRecommendView from "./childComps/HomeRecommendView";
@@ -27,6 +37,9 @@
   import NavBar from "../../components/common/navbar/NavBar";
   import TabControl from "../../components/content/tabcontrol/TabControl";
   import GoodsList from "../../components/content/goods/GoodsList";
+  import scroll from "../../components/common/scroll/scroll";
+  import BackTop from "../../components/content/backtop/BackTop";
+
 
 
   export default {
@@ -40,7 +53,11 @@
           'new': {page: 0, list: []},
           'sell': {page: 0, list: []},
         },
-        currentType: 'pop'
+        isShow: false,
+        currentType: 'pop',
+        taboffset:0,
+        isTabFixed:false,
+        saveY:0,
         //   datas:
         //     {
         //       "data": {
@@ -208,8 +225,8 @@
         // },
       }
     },
-    computed:{
-      showgoods(){
+    computed: {
+      showgoods() {
         return this.goods[this.currentType].list
       }
     },
@@ -219,7 +236,9 @@
       HomeRecommendView,
       Feature,
       TabControl,
-      GoodsList
+      GoodsList,
+      scroll,
+      BackTop
     },
     created() {
 
@@ -227,8 +246,30 @@
       this.getData('pop')
       this.getData('new')
       this.getData('sell')
+
       // this.banner = res.data.banner.list;
       // this.recommend = res.data.recommend.list;
+
+    },
+    mounted() {
+      //图片加在的事件监听
+      const refresh=debounce(this.$refs.scroll.refresh,500);
+      //  监听item中图片加在完成
+      this.$bus.$on('imgLoad', () => {
+        refresh()
+      })
+
+
+    },
+    destroyed() {
+      console.log("被销毁");
+    },
+    activated() {
+this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+this.saveY=this.$refs.scroll.getscrollY()
     },
     methods: {
       lunbo() {
@@ -245,6 +286,7 @@
         getHomeData(type, page).then(res => {
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page += 1
+          this.$refs.scroll.finishPullUp()
         }).catch(err => {
           console.log(err);
         })
@@ -264,25 +306,47 @@
             break;
 
         }
+        this.$refs.tabcontroll1.active=index
+        this.$refs.tabcontroll2.active=index
+      },
+      BackClick() {
+        console.log('baclClick');
+        // console.log(this.$refs.scroll.bscroll);
+        this.$refs.scroll.scrollTo(0, 0)
+      },
+      scroll(position) {
+        //1.判断backtop是否显示
+        this.isShow = position.y < -1000
+
+        // 2.决定tabControl 是否吸顶{position:fixed}
+        this.isTabFixed=(-position.y)>this.taboffset
+      },
+      loadmore() {
+        this.getData(this.currentType)
+      },
+      swiperImg(){
+        // 获取tabControl的offsettop
+        this.taboffset=this.$refs.tabcontroll2.$el.offsetTop
       }
     }
+
   }
 </script>
 
 <style scoped>
-  .right {
-    padding-top: 44px;
+  #home {
+    height: 100vh;
+    position: relative;
   }
 
   .home-nav {
     background: var(--color-tint);
     color: #fff;
-
     position: fixed;
     left: 0;
     right: 0;
     right: 0;
-    z-index: 9;
+    z-index: 7;
   }
 
   .tab-control {
@@ -290,5 +354,22 @@
     top: 44px;
     z-index: 9;
   }
+
+  .content1 {
+    /*height: calc(100% - 93px);*/
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    right: 0;
+    left: 0;
+    bottom: 49px;
+  }
+  .isFixd{
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    top: 44px;
+  }
+
 
 </style>
