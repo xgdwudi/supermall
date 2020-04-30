@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-list-item">
+  <div class="goods-list-item" @click="itemClick">
     <img :src="goodsitem.show.img" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsitem.title}}</p>
@@ -20,53 +20,62 @@
         }
       }
     },
-    methods:{
-      imageLoad(){
-          this.$bus.$emit('imgLoad')
+    methods: {
+      imageLoad() {
+        this.$bus.$emit('imgLoad')
+      },
+      itemClick() {
+        this.$router.push('/detail/' + this.goodsitem.iid)
       }
     }
   }
 </script>
 
 <style scoped>
-.goods-list-item{
-  padding-bottom: 40px;
-  position: relative;
-  width: 48%;
-}
-  .goods-list-item img{
+  .goods-list-item {
+    padding-bottom: 40px;
+    position: relative;
+    width: 48%;
+  }
+
+  .goods-list-item img {
     width: 100%;
     border-radius: 10px;
   }
-  .goods-info{
+
+  .goods-info {
     font-size: 12px;
     position: absolute;
-    buttom:5px;
-    left:0;
+    buttom: 5px;
+    left: 0;
     right: 0;
     overflow: hidden;
     text-align: center;
   }
-  .goods-info p{
+
+  .goods-info p {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-bottom: 3px;
   }
-  .goods-info .price{
+
+  .goods-info .price {
     color: var(--color-high-text);
     margin-right: 20px;
   }
-  .goods-info .collect{
+
+  .goods-info .collect {
     position: relative;
   }
-  .goods-info .collect::before{
-    content:'';
+
+  .goods-info .collect::before {
+    content: '';
     position: absolute;
-    left:-15px;
+    left: -15px;
     top: -1px;
-    width:14px;
-    height:14px;
+    width: 14px;
+    height: 14px;
     background: url("../../../assets/img/common/collect.svg") 0 0/14px 14px;
   }
 </style>

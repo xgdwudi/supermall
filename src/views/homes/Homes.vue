@@ -246,7 +246,6 @@
       this.getData('pop')
       this.getData('new')
       this.getData('sell')
-
       // this.banner = res.data.banner.list;
       // this.recommend = res.data.recommend.list;
 
@@ -265,11 +264,14 @@
       console.log("被销毁");
     },
     activated() {
-this.$refs.scroll.scrollTo(0,this.saveY,0)
+      console.log(this.saveY);
+      //先刷新，在定位
       this.$refs.scroll.refresh()
+      this.$refs.scroll.bcroll.scrollTo(0,this.saveY)
     },
     deactivated() {
-this.saveY=this.$refs.scroll.getscrollY()
+      this.saveY=this.$refs.scroll.getscrollY()
+      console.log(this.$refs.scroll.getscrollY());
     },
     methods: {
       lunbo() {
@@ -312,7 +314,7 @@ this.saveY=this.$refs.scroll.getscrollY()
       BackClick() {
         console.log('baclClick');
         // console.log(this.$refs.scroll.bscroll);
-        this.$refs.scroll.scrollTo(0, 0)
+        this.$refs.scroll.scrollTo1(0, 0,500)
       },
       scroll(position) {
         //1.判断backtop是否显示

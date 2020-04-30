@@ -40,19 +40,21 @@
       this.bcroll.on('pullingUp', () => {
         this.$emit('pullingUp')
       })
-    }, methods: {
-      scrollTo(x, y, time = 500) {
+    },
+    methods: {
+      scrollTo1(x, y, time) {
+        console.log(x, y, time);
         this.bcroll.scrollTo(x, y, time)
       },
       finishPullUp() {
         this.bcroll.finishPullUp()
       },
-      refresh(){
+      refresh() {
         console.log("log");
         this.bcroll && this.bcroll.refresh()
       },
-      getscrollY(){
-        return this.bcroll ? this.bcroll.y :0
+      getscrollY() {
+        return this.bcroll ? this.bcroll.y : 0
       }
 
     }
