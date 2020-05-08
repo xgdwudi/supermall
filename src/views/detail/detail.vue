@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"></detail-nav-bar>
+    <detail-nav-bar class="detail-nav" @shopClick="shopClick"></detail-nav-bar>
     <scroll class="content" ref="scroll">
       <detail-swiper :ImageTop="topImages"/>
-      <detail-base-info :goods="goods"></detail-base-info>
-      <detail-shop-info :shop="shop"/>
-      <detail-goods-info :detailInfo="detailInfo" @imageLoad="imgLoad"/>
-      <detail-param-info :paramInfo="paramInfo"/>
-      <detail-comment-info :commentInfo="commentInfo"/>
-      <goods-list :goods="recommend"/>
+      <detail-base-info  :goods="goods"></detail-base-info>
+      <detail-shop-info  :shop="shop"/>
+      <detail-goods-info ref="goodsinfo" :detailInfo="detailInfo" @imageLoad="imgLoad"/>
+      <detail-param-info ref="paraminfo" :paramInfo="paramInfo"/>
+      <detail-comment-info ref="commentinfo" :commentInfo="commentInfo"/>
+      <goods-list ref="goodlist" :goods="recommend"/>
     </scroll>
   </div>
 </template>
@@ -40,7 +40,8 @@
         detailInfo: {},
         paramInfo: {},
         commentInfo:{},
-        recommend:[]
+        recommend:[],
+        zhuanttai:[]
       }
     },
     components: {
@@ -83,9 +84,18 @@
 
       })
     },
+    
     methods: {
       imgLoad() {
         this.$refs.scroll.refresh()
+        this.zhuanttai.push(0)
+        this.zhuanttai.push(this.$refs.paraminfo.$el.offsetTop)
+        this.zhuanttai.push(this.$refs.commentinfo.$el.offsetTop)
+        this.zhuanttai.push(this.$refs.goodlist.$el.offsetTop)
+        console.log(this.zhuanttai);
+      },
+      shopClick(index){
+         this.$refs.scroll.scrollTo1(0,-this.zhuanttai[index]+44)
       }
     }
   }

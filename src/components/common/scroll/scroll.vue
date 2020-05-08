@@ -42,7 +42,7 @@
       })
     },
     methods: {
-      scrollTo1(x, y, time) {
+      scrollTo1(x, y, time=500) {
         console.log(x, y, time);
         this.bcroll.scrollTo(x, y, time)
       },

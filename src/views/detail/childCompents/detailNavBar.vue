@@ -33,6 +33,7 @@
     methods: {
       isactive(index) {
         this.active=index
+        this.$emit('shopClick',index)
       },
       backClick(){
         //返回到上一页面
