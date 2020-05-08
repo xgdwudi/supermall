@@ -8,6 +8,11 @@ export function getdetail(iid) {
     }
   })
 }
+export function getTuiijian() {
+return request({
+  url:'/recommend'
+})
+}
 
 
 export class Goods {
@@ -43,5 +48,6 @@ export class GoodsParam {
     this.sizes = rule.tables;
   }
 }
+
 
 

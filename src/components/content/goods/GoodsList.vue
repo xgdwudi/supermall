@@ -17,6 +17,7 @@
         }
       }
     },
+
     components:{
       GoodsListItem
     }

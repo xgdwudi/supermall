@@ -101,6 +101,7 @@
       <li>这是数据98</li>
       <li>这是数据99</li>
       <li>这是数据100</li>
+      
     </ul>
   </div>
 </template>
@@ -117,7 +118,6 @@
      mounted() {
        // this.bscroll=new BScroll('.ull',{})
        this.bscroll=new BScroll(this.$refs.aaa,{
-
        })
 
      }

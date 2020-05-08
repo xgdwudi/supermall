@@ -8,6 +8,7 @@
       <detail-goods-info :detailInfo="detailInfo" @imageLoad="imgLoad"/>
       <detail-param-info :paramInfo="paramInfo"/>
       <detail-comment-info :commentInfo="commentInfo"/>
+      <goods-list :goods="recommend"/>
     </scroll>
   </div>
 </template>
@@ -20,11 +21,12 @@
   import DetailGoodsInfo from "./childCompents/DetailGoodsInfo";
   import DetailParamInfo from "./childCompents/DetailParamInfo";
   import DetailCommentInfo from "./childCompents/DetailCommentInfo";
+  import GoodsList from "../../components/content/goods/GoodsList";
 
   import Scroll from '../../components/common/scroll/scroll'
 
   import {
-    getdetail, Goods, Shop, GoodsParam
+    getdetail, Goods, Shop, GoodsParam,getTuiijian
   } from "../../network/detail";
 
   export default {
@@ -37,7 +39,8 @@
         shop: {},
         detailInfo: {},
         paramInfo: {},
-        commentInfo:{}
+        commentInfo:{},
+        recommend:[]
       }
     },
     components: {
@@ -48,7 +51,8 @@
       Scroll,
       DetailGoodsInfo,
       DetailParamInfo,
-      DetailCommentInfo
+      DetailCommentInfo,
+      GoodsList
     },
     created() {
       console.log(this.$route.params.iid);
@@ -72,6 +76,11 @@
         if(data.rate.cRate !== 0){
           this.commentInfo=data.rate.list[0]
         }
+      })
+      //获取推荐信息
+      getTuiijian().then(res=>{
+        this.recommend=res.data.list
+
       })
     },
     methods: {
