@@ -1,15 +1,16 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav" @shopClick="shopClick"></detail-nav-bar>
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @shopClick="shopClick" ref="nav"></detail-nav-bar>
+    <scroll class="content" ref="scroll" @scroll="scroll1" :probe-type="3">
       <detail-swiper :ImageTop="topImages"/>
-      <detail-base-info  :goods="goods"></detail-base-info>
-      <detail-shop-info  :shop="shop"/>
+      <detail-base-info :goods="goods"></detail-base-info>
+      <detail-shop-info :shop="shop"/>
       <detail-goods-info ref="goodsinfo" :detailInfo="detailInfo" @imageLoad="imgLoad"/>
       <detail-param-info ref="paraminfo" :paramInfo="paramInfo"/>
       <detail-comment-info ref="commentinfo" :commentInfo="commentInfo"/>
       <goods-list ref="goodlist" :goods="recommend"/>
     </scroll>
+    <back-top/>
   </div>
 </template>
 
@@ -26,8 +27,9 @@
   import Scroll from '../../components/common/scroll/scroll'
 
   import {
-    getdetail, Goods, Shop, GoodsParam,getTuiijian
+    getdetail, Goods, Shop, GoodsParam, getTuiijian
   } from "../../network/detail";
+  import BackTop from "../../components/content/backtop/BackTop";
 
   export default {
     name: "detail",
@@ -39,12 +41,13 @@
         shop: {},
         detailInfo: {},
         paramInfo: {},
-        commentInfo:{},
-        recommend:[],
-        zhuanttai:[]
+        commentInfo: {},
+        recommend: [],
+        zhuanttai: []
       }
     },
     components: {
+      BackTop,
       detailNavBar,
       DetailSwiper,
       DetailBaseInfo,
@@ -73,18 +76,18 @@
         this.detailInfo = data.detailInfo;
         //  获取参数信息
         this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
-      //  去除评论信息
-        if(data.rate.cRate !== 0){
-          this.commentInfo=data.rate.list[0]
+        //  去除评论信息
+        if (data.rate.cRate !== 0) {
+          this.commentInfo = data.rate.list[0]
         }
       })
       //获取推荐信息
-      getTuiijian().then(res=>{
-        this.recommend=res.data.list
+      getTuiijian().then(res => {
+        this.recommend = res.data.list
 
       })
     },
-    
+
     methods: {
       imgLoad() {
         this.$refs.scroll.refresh()
@@ -94,8 +97,20 @@
         this.zhuanttai.push(this.$refs.goodlist.$el.offsetTop)
         console.log(this.zhuanttai);
       },
-      shopClick(index){
-         this.$refs.scroll.scrollTo1(0,-this.zhuanttai[index]+44)
+      shopClick(index) {
+        this.$refs.scroll.scrollTo1(0, -this.zhuanttai[index] + 44)
+      },
+      scroll1(position) {
+        for (let i in this.zhuanttai) {
+          const j = parseInt(i)
+          // console.log(position.y,55555);
+          if (position.y < -this.zhuanttai[j]+44 && -this.zhuanttai[j+1]+44  < position.y) {
+            this.$refs.nav.active = j
+          }else if(position.y < -this.zhuanttai[j]+44){
+            this.$refs.nav.active = j
+          }
+        }
+
       }
     }
   }
