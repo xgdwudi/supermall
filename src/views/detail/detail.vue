@@ -10,7 +10,8 @@
       <detail-comment-info ref="commentinfo" :commentInfo="commentInfo"/>
       <goods-list ref="goodlist" :goods="recommend"/>
     </scroll>
-    <back-top/>
+    <back-top @click.native="backtop" v-show="isshow"/>
+    <detailbuttom-bar @shopClick="shopClick"/>
   </div>
 </template>
 
@@ -25,6 +26,8 @@
   import GoodsList from "../../components/content/goods/GoodsList";
 
   import Scroll from '../../components/common/scroll/scroll'
+
+  import {Backtopadd} from '../../common/mixin'
 
   import {
     getdetail, Goods, Shop, GoodsParam, getTuiijian
@@ -43,9 +46,11 @@
         paramInfo: {},
         commentInfo: {},
         recommend: [],
-        zhuanttai: []
+        zhuanttai: [],
+
       }
     },
+    mixins:[Backtopadd],
     components: {
       BackTop,
       detailNavBar,
@@ -101,6 +106,7 @@
         this.$refs.scroll.scrollTo1(0, -this.zhuanttai[index] + 44)
       },
       scroll1(position) {
+        this.demo(position)
         for (let i in this.zhuanttai) {
           const j = parseInt(i)
           // console.log(position.y,55555);
@@ -110,8 +116,19 @@
             this.$refs.nav.active = j
           }
         }
+      },
+      shopClick(){
+        const product={};
+        product.image=this.topImages[0];
+        product.title=this.goods.title;
+        product.desc=this.goods.desc;
+        product.price=this.goods.newPrice;
+        product.iid=this.iid
+        product.count=1;
+        // this.$store.commit('addshops',product)
+        this.$store.dispatch('addCart',product)
+      },
 
-      }
     }
   }
 </script>
@@ -125,7 +142,7 @@
   }
 
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 93px);
   }
 
   .detail-nav {
