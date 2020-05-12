@@ -2,6 +2,7 @@
   <div class="cart">
     <nav-bar class="nav-bar"><div slot="center">购物车({{cartLength}})</div></nav-bar>
     <cart-list/>
+    <buttom-sum/>
   </div>
 </template>
 
@@ -12,12 +13,14 @@
 
 
   import CartList from "./childCompts/CartList";
+  import ButtomSum from "./childCompts/ButtomSum";
 
     export default {
         name: "cart",
         components:{
           CartList,
-        NavBar
+        NavBar,
+          ButtomSum
        },
       comments:{
         CartList
@@ -35,6 +38,9 @@
 </script>
 
 <style scoped>
+  .cart{
+    height: 100vh;
+  }
 .nav-bar{
   background: var(--color-tint);
   color: #ffffff;

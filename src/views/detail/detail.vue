@@ -122,9 +122,10 @@
         product.image=this.topImages[0];
         product.title=this.goods.title;
         product.desc=this.goods.desc;
-        product.price=this.goods.newPrice;
+        product.price=this.goods.nowPrice;
         product.iid=this.iid
         product.count=1;
+        product.isActive=true
         // this.$store.commit('addshops',product)
         this.$store.dispatch('addCart',product)
       },
