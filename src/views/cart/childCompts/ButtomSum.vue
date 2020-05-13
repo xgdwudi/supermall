@@ -1,11 +1,12 @@
 <template>
   <div class="buttom-sum">
     <div class="sum-item">
-      <div @click="selectAll"  class="sum-item">
-        <check-button :isActive="quanxuan" class="check-buttom"/>
+      <div class="sum-item">
+        <check-button :isActive="quanxuan" class="check-buttom" @click.native="selectAll"/>
         <div>全选</div>
       </div>
       <div>合计:￥{{zonngshu}}</div>
+      <div>去计算:{{jisuan}}</div>
     </div>
 
   </div>
@@ -19,9 +20,8 @@
     components: {
       CheckButton
     },
-    data(){
-      return{
-        quanxuan:true
+    data() {
+      return {
       }
     },
     computed: {
@@ -29,22 +29,29 @@
         return this.$store.state.shops.filter(item => {
           return item.isActive
         }).reduce((previousValue, currentValue) => {
-          return previousValue + currentValue.price*currentValue.count
+          return previousValue + currentValue.price * currentValue.count
         }, 0)
+      },
+      jisuan() {
+        return this.$store.getters.cartList.filter(item => {
+          return item.isActive == true
+        }).length
+      },
+      quanxuan() {
+        if(this.$store.getters.cartList.length==0) return false
+        return !this.$store.getters.cartList.filter(item =>!item.isActive).length
       },
     },
     methods: {
       selectAll() {
-        this.quanxuan=!this.quanxuan
-        if(this.quanxuan==true){
-          this.$store.state.shops.filter(item=>{
-            item.isActive=true
-          })
-
-        }else{
-          this.$store.state.shops.filter(item=>{
+        if(this.quanxuan){
+          this.$store.state.shops.filter(item=>
             item.isActive=false
-          })
+          )
+        }else{
+          this.$store.state.shops.filter(item=>
+            item.isActive=true
+          )
         }
 
 

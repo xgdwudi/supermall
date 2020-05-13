@@ -47,7 +47,6 @@
         commentInfo: {},
         recommend: [],
         zhuanttai: [],
-
       }
     },
     mixins:[Backtopadd],
@@ -61,7 +60,7 @@
       DetailGoodsInfo,
       DetailParamInfo,
       DetailCommentInfo,
-      GoodsList
+      GoodsList,
     },
     created() {
       console.log(this.$route.params.iid);
@@ -100,7 +99,6 @@
         this.zhuanttai.push(this.$refs.paraminfo.$el.offsetTop)
         this.zhuanttai.push(this.$refs.commentinfo.$el.offsetTop)
         this.zhuanttai.push(this.$refs.goodlist.$el.offsetTop)
-        console.log(this.zhuanttai);
       },
       shopClick(index) {
         this.$refs.scroll.scrollTo1(0, -this.zhuanttai[index] + 44)
@@ -127,7 +125,11 @@
         product.count=1;
         product.isActive=true
         // this.$store.commit('addshops',product)
-        this.$store.dispatch('addCart',product)
+        this.$store.dispatch('addCart',product).then(res=>{
+          this.$toast.isshow1(res,2000)
+        })
+
+
       },
 
     }
